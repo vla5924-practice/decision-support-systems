@@ -49,7 +49,7 @@ class PiyavskiMethod(BaseMethod):
     def metric(self, i: int, m: Fraction, x: list, func: BaseFunction) -> Fraction:
         return Fraction(1, 2) * (m * (x[i] - x[i - 1]) - (func.at(x[i]) + func.at(x[i - 1])))
 
-    def m_value(self, /) -> Fraction:
+    def m_value(self, x: list, func: BaseFunction, tau: int) -> Fraction:
         return self._param
 
 
@@ -64,6 +64,7 @@ class StronginMethod(BaseMethod):
     def m_value(self, x: list, func: BaseFunction, tau: int) -> Fraction:
         mu = [abs(func.at(x[j]) - func.at(x[j - 1])) / (x[j] - x[j - 1])
               for j in range(1, tau + 1)]
+        debug_log("μ", *mu)
         m = max(mu)
         return m * self._param if m != 0 else 1
 
